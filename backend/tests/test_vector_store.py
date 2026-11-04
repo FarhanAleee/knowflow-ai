@@ -146,6 +146,35 @@ def test_search_filters_by_document_id(tmp_path):
     assert [item.chunk_id for item in stored_chunks] == ["doc-a"]
 
 
+def test_document_listing_and_delete_are_scoped_by_document_id(tmp_path):
+    store = ChromaVectorStore(persist_directory=tmp_path)
+    chunks = [
+        EmbeddedChunk(
+            **{
+                **make_chunk(f"{document_id}-chunk", make_embedding((1.0, 0.0))).__dict__,
+                "document_id": document_id,
+            }
+        )
+        for document_id in ("document-a", "document-b")
+    ]
+    store.upsert(chunks)
+
+    documents = store.list_document_records()
+    deleted_count = store.delete_document("document-a")
+
+    assert {document.document_id for document in documents} == {
+        "document-a",
+        "document-b",
+    }
+    assert all(document.chunks_indexed == 1 for document in documents)
+    assert deleted_count == 1
+    assert store.get_chunk_ids("document-a") == []
+    assert store.get_chunk_ids("document-b") == ["document-b-chunk"]
+    assert [document.document_id for document in store.list_document_records()] == [
+        "document-b"
+    ]
+
+
 def test_retrieval_and_delete_by_id(tmp_path):
     store = ChromaVectorStore(persist_directory=tmp_path)
     store.upsert(
