@@ -28,6 +28,7 @@ ENV/
 chroma/
 vector_store/
 backend/data/
+/backend/data/chroma/
 data/
 
 # Editor and operating-system files
