@@ -140,8 +140,10 @@ def test_search_filters_by_document_id(tmp_path):
         make_embedding((1.0, 0.0)),
         document_id="document-b",
     )
+    stored_chunks = store.get_chunks(document_id="document-a")
 
     assert [item.chunk_id for item in results] == ["doc-b"]
+    assert [item.chunk_id for item in stored_chunks] == ["doc-a"]
 
 
 def test_retrieval_and_delete_by_id(tmp_path):

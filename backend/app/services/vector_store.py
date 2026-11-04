@@ -282,13 +282,14 @@ class ChromaVectorStore:
         limit: int | None = None,
         source_filename: str | None = None,
         source_format: str | None = None,
+        document_id: str | None = None,
     ) -> list[StoredChunk]:
         """Retrieve stored text, metadata, and embeddings."""
         if ids is not None and not ids:
             return []
         if limit is not None:
             self._validate_limit(limit, "limit")
-        where = self._where(source_filename, source_format)
+        where = self._where(source_filename, source_format, document_id)
 
         arguments: dict[str, Any] = {"include": ["documents", "metadatas", "embeddings"]}
         if ids is not None:
