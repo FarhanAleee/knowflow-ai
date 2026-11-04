@@ -148,6 +148,8 @@ class ChromaVectorStore:
             metadata["section_number"] = chunk.section_number
         if chunk.section_type is not None:
             metadata["section_type"] = chunk.section_type
+        if getattr(chunk, "document_id", None):
+            metadata["document_id"] = chunk.document_id
         return metadata
 
     @staticmethod

@@ -32,6 +32,8 @@ class EmbeddedChunk:
     text: str
     character_count: int
     embedding: list[float]
+    embedding_model: str = DEFAULT_MODEL_NAME
+    document_id: str | None = None
 
 
 def _load_sentence_transformer(
@@ -204,6 +206,7 @@ class EmbeddingService:
                     text=chunk.text,
                     character_count=chunk.character_count,
                     embedding=vector,
+                    embedding_model=self.model_name,
                 )
                 for chunk, vector in zip(chunks, vectors)
             ]
