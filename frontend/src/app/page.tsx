@@ -33,9 +33,17 @@ export default function Home() {
             </span>
             <span className="text-lg">KnowFlow <span className="text-[#668272]">AI</span></span>
           </Link>
-          <span className="rounded-full border border-[#17211c]/10 px-3 py-1.5 text-xs font-medium tracking-wide text-[#526258]">
-            FOUNDATION
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="hidden rounded-full border border-[#17211c]/10 px-3 py-1.5 text-xs font-medium tracking-wide text-[#526258] sm:inline-flex">
+              FOUNDATION
+            </span>
+            <Link
+              className="rounded-full bg-[#195c43] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#124a35] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#195c43]"
+              href="/dashboard"
+            >
+              Open workspace
+            </Link>
+          </div>
         </header>
 
         <section className="grid flex-1 items-center gap-14 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
