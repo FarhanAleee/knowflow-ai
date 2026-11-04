@@ -231,6 +231,7 @@ class RetrievalPipeline:
         top_k: int = 3,
         source_filename: str | None = None,
         source_format: str | None = None,
+        document_id: str | None = None,
     ) -> list[SearchResult]:
         if not isinstance(query, str) or not query.strip():
             raise ValueError("query must be a non-empty string.")
@@ -249,6 +250,7 @@ class RetrievalPipeline:
             n_results=top_k,
             source_filename=source_filename,
             source_format=source_format,
+            document_id=document_id,
         )
 
 

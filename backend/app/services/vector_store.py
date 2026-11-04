@@ -156,6 +156,7 @@ class ChromaVectorStore:
     def _where(
         source_filename: str | None,
         source_format: str | None,
+        document_id: str | None = None,
     ) -> dict[str, Any] | None:
         predicates: list[dict[str, str]] = []
         if source_filename is not None:
@@ -165,6 +166,8 @@ class ChromaVectorStore:
             if normalized_format not in {"PDF", "DOCX", "TXT"}:
                 raise ValueError(f"Unsupported source format: {source_format!r}.")
             predicates.append({"source_format": normalized_format})
+        if document_id is not None:
+            predicates.append({"document_id": document_id})
 
         if not predicates:
             return None
@@ -211,11 +214,12 @@ class ChromaVectorStore:
         n_results: int = 5,
         source_filename: str | None = None,
         source_format: str | None = None,
+        document_id: str | None = None,
     ) -> list[SearchResult]:
         """Search by an explicit query vector, closest cosine result first."""
         self._validate_limit(n_results)
         vector = self._validate_vector(query_embedding, "Query embedding")
-        where = self._where(source_filename, source_format)
+        where = self._where(source_filename, source_format, document_id)
         if self._collection.count() == 0:
             return []
 

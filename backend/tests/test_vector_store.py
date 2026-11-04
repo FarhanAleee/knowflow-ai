@@ -120,6 +120,30 @@ def test_search_filters_by_source_filename_and_format(tmp_path):
     assert "page_number" not in results[0].metadata
 
 
+def test_search_filters_by_document_id(tmp_path):
+    store = ChromaVectorStore(persist_directory=tmp_path)
+    first = EmbeddedChunk(
+        **{
+            **make_chunk("doc-a", make_embedding((1.0, 0.0))).__dict__,
+            "document_id": "document-a",
+        }
+    )
+    second = EmbeddedChunk(
+        **{
+            **make_chunk("doc-b", make_embedding((1.0, 0.0))).__dict__,
+            "document_id": "document-b",
+        }
+    )
+    store.upsert([first, second])
+
+    results = store.search(
+        make_embedding((1.0, 0.0)),
+        document_id="document-b",
+    )
+
+    assert [item.chunk_id for item in results] == ["doc-b"]
+
+
 def test_retrieval_and_delete_by_id(tmp_path):
     store = ChromaVectorStore(persist_directory=tmp_path)
     store.upsert(
